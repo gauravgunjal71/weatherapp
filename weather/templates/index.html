@@ -1,34 +1,111 @@
+{%load static%}
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <title>Weather Forecast</title>
-  </head>
-  <body class="container">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+  <title>Weather Forecast</title>
+  <style>
+    .content-box {
+    background-color: #fafafb;
+    box-shadow: 1px 4px 8px rgba(0,0,0,.15);
+    transition: all .3s ease-in-out;
+    padding: 10px;
+    padding-bottom: 0;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    height: inherit;
+    border-radius: 15px;
+    }
+    .content-box:hover{
+      transform: scale(1.1);
+      cursor: pointer;
+    }
+    
+    body {
+      background: linear-gradient(-45deg, #861a54, #054f7d, #00a7cf, #efe348);
+      background-size: 600% 600%;
+      animation: gradient 10s ease infinite;
+    }
+
+    @keyframes gradient {
+      0% {
+        background-position: 0% 0%;
+      }
+      50% {
+        background-position: 100% 0%;
+      }
+      100% {
+        background-position: 0% 0%;
+      }
+    }
+
+
+  </style>
+</head>
+
+<body class="container">
   </br>
-    <form method="POST" action="./getweather">
-      {%csrf_token%}
-      <div class="form-group">
-        <h1 style="text-align: center;">Enter your city name</h1>
-        <input type="text" class="form-control" name="city">
-        <button type="submit" class="btn btn-primary" style="display: block; margin: auto; margin-top: 10px;">Submit City</button>
+  <h1 style="text-align: center; color:white">Find weather in your city</h1>
+  </br>
+  <form method="POST" action="./getweather">
+    {%csrf_token%}
+    <div class="form-group" >
+      <h2 style="text-align: center; color: white;">Enter your city name</h2>
+      <input placeholder="Enter city name here" type="text" class="form-control" name="city">
+      <button type="submit" class="btn btn-primary" style="display: block; margin: auto; margin-top: 10px;">Submit
+        City</button>
+    </div>
+  </form>
+
+  {%if error%}
+  <h1 style="text-align: center; color: white;">{{error}}</h1>
+  {%endif%}
+
+  {%if weather_data%}
+    <h1 style="text-align: center; color: white;">Weather for next 8 days in {{weather_data.cityname}}</h1>
+    <div class="row">
+      {%for daily_data in weather_data.daily%}
+
+      <div class="col-md-3 text-center" style="opacity: 0.9;">
+        <div class="content-box">
+          <h3 class="content-box-title" style="text-decoration: underline;">{{daily_data.dt}}</h3>
+          {%for weather in daily_data.weather%}
+            <img style="height: 100px; width: 100px;" src="{%static ''%}icons/{{weather.main}}.svg">
+            <h4>{{weather.main}}</h4>
+          {%endfor%}
+          <h5>Max temp. - {{daily_data.temp.max}}°C</h5>
+          <h5>Min temp. - {{daily_data.temp.min}}°C</h5>
+          <h5>Pressure - {{daily_data.pressure}} hPa</h5>
+          <h5>Humidity - {{daily_data.humidity}}%</h5>
+          <br>
+        </div>
       </div>
-    </form>
+        
+      {%endfor%}
+    </div>
 
-    {%if error%}
-      <h1 style="text-align: center;">{{error}}</h1>
-    {%endif%}
+  {%endif%}
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
-  </body>
+
+
+  <!-- Optional JavaScript -->
+  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"
+    integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI"
+    crossorigin="anonymous"></script>
+</body>
+
 </html>
