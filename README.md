@@ -2,7 +2,7 @@
 A weather forecast app built with OpenWeatherMap API.
 
 ## Example output - 
-![Weather app example output](https://drive.google.com/open?id=10IkbegNEJwU2JFKyGoC3SylE3RH9qiC1)
+![Weather app example output](sample/weather-app.png)
 
 ## Installation instructions
 Open terminal and install required dependencies using following command -
