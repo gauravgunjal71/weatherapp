@@ -10,7 +10,7 @@
 # weatherapp/weatherapp/asgi.py: 12
 # weatherapp/weatherapp/urls.py: 17
 # weatherapp/weatherapp/wsgi.py: 12
-Django == 3.1.13
+Django == 3.1.14
 
 # weatherapp/weather/views.py: 2
 requests == 2.22.0
