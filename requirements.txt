@@ -13,4 +13,4 @@
 Django == 3.1.13
 
 # weatherapp/weather/views.py: 2
-requests == 2.22.0
+requests == 2.31.0
